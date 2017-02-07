@@ -12,6 +12,7 @@ class SnakePlaygroundView: UIView {
 
     //var delegate:AnyObject // 錯誤的delegate宣告
     var delegate:SnakePlaygroundViewDelegate?
+    var dataSource:SnakePlaygroundViewDataSource?
     
     
     override init(frame: CGRect) {
@@ -41,12 +42,21 @@ class SnakePlaygroundView: UIView {
     
     // 和drawRect有何不同?
     override func draw(_ rect: CGRect) {
-        print("draw........")
+        //print("draw........")
+        
+        if let body = dataSource?.snakeBody {
+            for point in body {
+                let beizerPath = UIBezierPath(ovalIn: CGRect(x: point.x-1/2, y: point.y-1/2, width: 1, height: 1))
+                UIColor.red.setFill()
+                beizerPath.fill()
+            }
+        }
+
     }
     
     // 注意GestureRecognizer's selector寫法
     func getSwipeEvent(recognizer: UISwipeGestureRecognizer) {
-        delegate!.swipe(to: recognizer.direction)
+        delegate?.swipe(to: recognizer.direction)
     }
 
 }
@@ -55,6 +65,10 @@ protocol SnakePlaygroundViewDelegate {
     func swipe(to:UISwipeGestureRecognizerDirection)
 }
 
+protocol SnakePlaygroundViewDataSource {
+    // view應該不知道model的資料格式, 他只想知道CGPoint...所以該由誰提供格式轉換?
+    var snakeBody:Array<CGPoint>? {get}
+}
 /* 錯誤的寫法
 extension SnakePlaygroundView : SnakePlaygroundViewDelegate {
     

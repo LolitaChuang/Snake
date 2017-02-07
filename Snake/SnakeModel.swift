@@ -31,7 +31,7 @@ class Snake {
         case right
     }
     
-    var body = Array<Position>() // 注意array的初始化, 以struct為element的初始化
+    var body = Array<Position>() // 注意array的初始化, 以struct為element的初始化 // 若要讓其read-only?
     var length:Int {
         get {
             return body.count
@@ -44,7 +44,7 @@ class Snake {
         }
     }
     
-    var newHead:Position { // 一直重複被計算?
+    private var newHead:Position { // 一直重複被計算?
         var newHead:Position
         
         switch (self.direction) { // 注意enum的運算
@@ -58,7 +58,7 @@ class Snake {
         return newHead
     }
     
-    var tail:Position {
+    private var tail:Position {
         get {
             return body.last!
         }
@@ -101,12 +101,12 @@ class Snake {
         return true
     }
     
-    func isHeadCollidTail() -> Bool {
+    private func isHeadCollidTail() -> Bool {
         // 新head==舊tail
         return (newHead == tail) // compiler error "Binary operator '==' cannot be applied to two 'Snake.Position' =operands"? Ans:因為需要先confirm Equatable protocol
     }
     
-    func rearrangePositionWithBorder(point:Position) -> Position {
+    private func rearrangePositionWithBorder(point:Position) -> Position {
         var newPoint = point
         if (newPoint.x < 0) {
             newPoint.x = newPoint.x + border.x
