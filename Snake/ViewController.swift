@@ -34,10 +34,11 @@ class ViewController: UIViewController {
         // prepare Timer 需要自己將timer加入runloop
         timer = Timer(timeInterval: 0.5, repeats: true, block: { (timerParameter) in
             // timer's block是在哪個thread?
+            
+            self.snake.move() // 不需要在main thread中
             DispatchQueue.main.async {
                 //print("timer....")
                 
-                self.snake.move()
                 /*
                 if self.snake.head == fruit {
                     if self.snake.extend() {
